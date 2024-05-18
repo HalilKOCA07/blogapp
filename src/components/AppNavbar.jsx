@@ -11,12 +11,11 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import logo from "../helper/HK-logo.png";
 import { Link } from "@mui/material";
 
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const pages = ["DASHBOARD", "NEW BLOG", "ABOUT"];
+const settings = ["Profile", "Logout"];
 
 function AppNavbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -60,7 +59,7 @@ function AppNavbar() {
               textDecoration: "none",
             }}
           >
-            <Link href="/">
+            <Link to="/">
               <img src={logo} alt="HK-logo" width={60} />
             </Link>
           </Typography>
@@ -117,7 +116,7 @@ function AppNavbar() {
               textDecoration: "none",
             }}
           >
-            <Link href="/">
+            <Link to="/">
               <img src={logo} alt="HK-logo" width={60} />
             </Link>
           </Typography>

@@ -1,38 +1,30 @@
-import * as React from 'react';
-import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import CommentIcon from '@mui/icons-material/Comment';
+import { Link } from '@mui/material';
+import useApiRequest from '../services/useApiRequest';
+import { useEffect } from 'react';
 
-const ExpandMore = styled((props) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
+
 
 export default function BlogCard() {
-  const [expanded, setExpanded] = React.useState(false);
 
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
-  };
+  const {getInfo} = useApiRequest()
+  console.log(getInfo)
 
+useEffect(() => {
+  getInfo()
+},[])
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardHeader
@@ -62,24 +54,24 @@ export default function BlogCard() {
           if you like.
         </Typography>
       </CardContent>
-      <CardActions disableSpacing>
+      <CardActions disableSpacing sx={{display:"flex", justifyContent:"space-around"}}>
         <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
+          <FavoriteIcon /> <span>7</span>
         </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
+        <IconButton aria-label="comment">
+          <CommentIcon /><span>9</span>
         </IconButton>
-        <ExpandMore
-          expand={expanded}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
+        <IconButton aria-label="visibility">
+          <VisibilityIcon /><span>15</span>
+        </IconButton>
+
+        <Link
           aria-label="show more"
+          sx={{color:"white", bgcolor:"#1976D2", width:100, height:40, borderRadius:2, justifyContent:"center", alignItems:"center", display:"flex", fontWeight:"bold", px:1, ml:3, fontSize:"1.3rem"}} 
         >
-          <ExpandMoreIcon />
-        </ExpandMore>
+          Read More
+        </Link>
       </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-      </Collapse>
     </Card>
   );
 }

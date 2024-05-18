@@ -1,29 +1,29 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    blogCard: [],
-    loading: false,
-    error: false
-}
+  blogCard: [],
+  loading: false,
+  error: false,
+};
 
 const CardSlice = createSlice({
-  name: card,
+  name: "card",
   initialState,
   reducers: {
     fetchStart: (state) => {
-        state.loading= true
+      state.loading = true;
     },
-    getApiCardSuccess:(state, {payload: {path, cardData}}) => {
-        fetchStart=false
-        state[path] = cardData
+    getApiCardSuccess: (state, { payload: { path, apiInfo } }) => {
+      fetchStart = false;
+      state[path] = apiInfo;
     },
-    fetchError:(state) => {
-        state.loading=false
-        state.error=true
-    }
-  }
+    fetchError: (state) => {
+      state.loading = false;
+      state.error = true;
+    },
+  },
 });
 
-export const {fetchError, fetchStart, getApiCardSuccess} = CardSlice.actions
+export const { fetchError, fetchStart, getApiCardSuccess } = CardSlice.actions;
 
-export default CardSlice.reducer
+export default CardSlice.reducer;
