@@ -13,13 +13,22 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import logo from "../helper/HK-logo.png";
 import { Link } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-const pages = ["DASHBOARD", "NEW BLOG", "ABOUT"];
-const settings = ["Profile", "Logout"];
+const pages = [
+  { name: "DASHBOARD", path: "/" },
+  { name: "NEW BLOG", path: "/auth/new-blog" },
+  { name: "ABOUT", path: "/about" },
+];
+const settings = [
+  { name: "Profile", path: "/auth/profile" },
+  { name: "Account", path: "/auth" },
+];
 
 function AppNavbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -93,9 +102,15 @@ function AppNavbar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+              {pages.map((page, index) => (
+                <MenuItem
+                  key={index}
+                  onClick={() => {
+                    handleCloseNavMenu();
+                    navigate(page.path);
+                  }}
+                >
+                  <Button variant="text">{page.name}</Button>
                 </MenuItem>
               ))}
             </Menu>
@@ -123,11 +138,14 @@ function AppNavbar() {
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
-                key={page}
-                onClick={handleCloseNavMenu}
+                key={page.name}
+                onClick={() => {
+                  handleCloseNavMenu();
+                  navigate(page.path);
+                }}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                {page}
+                {page.name}
               </Button>
             ))}
           </Box>
@@ -155,10 +173,16 @@ function AppNavbar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+                <MenuItem
+                  key={setting.name}
+                  onClick={() => {
+                    handleCloseUserMenu(); navigate(setting.path);
+                  }}
+                >
+                  <Button textAlign="center">{setting.name}</Button>
                 </MenuItem>
               ))}
+              <Button>Logout</Button>
             </Menu>
           </Box>
         </Toolbar>
