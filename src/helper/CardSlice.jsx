@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   blogs: [],
+  newBlog: [],
+  categories:[],
   loading: false,
   error: false,
 };
@@ -13,9 +15,9 @@ const CardSlice = createSlice({
     fetchStart: (state) => {
       state.loading = true;
     },
-    getApiCardSuccess: (state, { payload}) => {
-      fetchStart.loading = false;
-      state.blogs = payload.data;
+    getApiCardSuccess: (state, {payload: {path, blogInfo}}) => {
+      fetchStart.loading = false
+      state[path] = blogInfo
     },
     fetchError: (state) => {
       state.loading = false;

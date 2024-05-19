@@ -9,7 +9,6 @@ import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CommentIcon from "@mui/icons-material/Comment";
 import { Box, Button, Link } from "@mui/material";
 import useApiRequest from "../services/useApiRequest";
@@ -19,9 +18,10 @@ import { useSelector } from "react-redux";
 export default function BlogCard() {
   const { blogs } = useSelector((state) => state.card);
   const { getInfo } = useApiRequest();
+console.log(blogs)
 
   useEffect(() => {
-    getInfo();
+    getInfo("blogs");
   }, []);
   return (
     <Box

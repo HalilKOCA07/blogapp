@@ -5,9 +5,11 @@ import { fetchFail, loginSuccess } from '../helper/AuthSlice'
 import { toastErrorNotify, toastSuccessNotify } from '../helper/ToastNotify'
 import useAxios from './useAxios'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const useAuthRequest = () => {
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const {AxiosPublic} = useAxios
 
     const login = async (userInfo) => {
@@ -16,6 +18,7 @@ const useAuthRequest = () => {
             const {data} = await axios.post( `${process.env.REACT_APP_BASE_URL}/auth/login`, userInfo)
             dispatch(loginSuccess(data))
             toastSuccessNotify("Login is valid")
+            navigate("/auth")
         }catch(error){
             dispatch(fetchFail())
             toastErrorNotify("Login is invalid")
