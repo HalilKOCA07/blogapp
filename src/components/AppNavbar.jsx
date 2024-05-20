@@ -14,6 +14,8 @@ import MenuItem from "@mui/material/MenuItem";
 import logo from "../helper/HK-logo.png";
 import { Link } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import useAuthRequest from "../services/useAuthRequest";
+import { useSelector } from "react-redux";
 
 const pages = [
   { name: "DASHBOARD", path: "/" },
@@ -29,6 +31,8 @@ function AppNavbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const navigate = useNavigate();
+  const { logout } = useAuthRequest();
+  const { user } = useSelector((state) => state.auth);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -176,13 +180,14 @@ function AppNavbar() {
                 <MenuItem
                   key={setting.name}
                   onClick={() => {
-                    handleCloseUserMenu(); navigate(setting.path);
+                    handleCloseUserMenu();
+                    navigate(setting.path);
                   }}
                 >
                   <Button textAlign="center">{setting.name}</Button>
                 </MenuItem>
               ))}
-              <Button>Logout</Button>
+              {user && (<Button onClick={logout}>Loagout</Button>)}
             </Menu>
           </Box>
         </Toolbar>

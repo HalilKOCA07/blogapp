@@ -16,12 +16,12 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 export default function BlogCard() {
-  const { blogs } = useSelector((state) => state.card);
+  const { blogs = [] } = useSelector((state) => state.card);
   const { getInfo } = useApiRequest();
 console.log(blogs)
 
   useEffect(() => {
-    getInfo("blogs");
+    getInfo();
   }, []);
   return (
     <Box
@@ -35,7 +35,7 @@ console.log(blogs)
       }}
     >
       {blogs.map((item) => (
-        <Card key={item.id} sx={{ maxWidth: 300, borderRadius:3 }}>
+        <Card key={item._id} sx={{ maxWidth: 300, borderRadius:3 }}>
           <CardHeader
             avatar={
               <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -47,7 +47,6 @@ console.log(blogs)
           />
           <CardMedia
             component="img"
-            height="194"
             image={item.image}
             alt="Paella dish"
           />
@@ -70,15 +69,15 @@ console.log(blogs)
             sx={{ display: "flex", justifyContent: "space-around" }}
           >
             <IconButton aria-label="add to favorites">
-              <FavoriteIcon /> <span>7</span>
+              <FavoriteIcon /> <span>{item.likes.length}</span>
             </IconButton>
             <IconButton aria-label="comment">
               <CommentIcon />
-              <span>9</span>
+              <span>{item.comments.length}</span>
             </IconButton>
             <IconButton aria-label="visibility">
               <VisibilityIcon />
-              <span>15</span>
+              <span>{item.__v}</span>
             </IconButton>
             <Button variant="contained" sx={{whiteSpace:"nowrap"}}>Read More</Button>
           </CardActions>
