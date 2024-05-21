@@ -14,11 +14,18 @@ import { Box, Button, Link } from "@mui/material";
 import useApiRequest from "../services/useApiRequest";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function BlogCard() {
   const { blogs = [] } = useSelector((state) => state.card);
   const { getInfo } = useApiRequest();
+  const navigate = useNavigate()
 console.log(blogs)
+
+const handleDetail = () => {
+
+
+}
 
   useEffect(() => {
     getInfo();
@@ -79,7 +86,7 @@ console.log(blogs)
               <VisibilityIcon />
               <span>{item.__v}</span>
             </IconButton>
-            <Button variant="contained" sx={{whiteSpace:"nowrap"}}>Read More</Button>
+            <Button variant="contained" sx={{whiteSpace:"nowrap"}} onClick={() => navigate(`/detail/${item._id}`)}>Read More</Button>
           </CardActions>
         </Card>
       ))}

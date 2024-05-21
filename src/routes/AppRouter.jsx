@@ -10,6 +10,7 @@ import Profile from "../pages/Profile";
 import PrivaterRouter from "./PrivateRouter";
 import AppNavbar from "../components/AppNavbar";
 import Footer from "../components/Footer";
+import Detail from "../pages/Detail";
 const AppRoutes = () => {
   return (
   <Router>
@@ -19,6 +20,7 @@ const AppRoutes = () => {
         <Route path="/about" element={<About />}/> 
         <Route path="/login" element={<Login />}/> 
         <Route path="/register" element={<Register />}/> 
+        <Route path="/detail/:id" element= {<Detail />} />
         <Route path="/auth" element={<PrivaterRouter />}>
           <Route path="/auth" element={<Account />} />    
           <Route path="/auth/new-blog" element={<NewBlog />} />    
