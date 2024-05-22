@@ -35,7 +35,7 @@ const useApiRequest = () => {
     dispatch(fetchStart());
     try {
       const { data } = await axiosToken.get(`/blogs/${id}`);
-      const blogDetail = data.data;
+      const blogDetail = data;
       dispatch(getApiDetailSuccess({ blogDetail }));
     } catch (error) {
       console.log("Detail wrong", error);
