@@ -1,4 +1,3 @@
-import React from "react";
 import useAxios from "./useAxios";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,9 +11,8 @@ import { toastErrorNotify, toastSuccessNotify } from "../helper/ToastNotify";
 import { useParams } from "react-router-dom";
 
 const useApiRequest = () => {
-  const { id } = useParams();
   const { user } = useSelector((state) => state.auth);
-  const { axiosToken, AxiosPublic } = useAxios();
+  const { axiosToken } = useAxios();
   const dispatch = useDispatch();
 
   const getInfo = async (path = "blogs") => {
@@ -36,6 +34,7 @@ const useApiRequest = () => {
     try {
       const { data } = await axiosToken.get(`/${path}`);
       const commentsInfo = data.data;
+      console.log(commentsInfo)
       getApiCommentsSuccess({path, commentsInfo});
       toastSuccessNotify(`${path} basariliyla eklenmiştir.`);
     } catch (error) {
@@ -44,6 +43,25 @@ const useApiRequest = () => {
       console.log(error);
     }
   };
+  // const getComments = async () => {
+  //   dispatch(fetchStart());
+  //   try {
+  //     const { data } = await axios.get(
+  //       `${process.env.REACT_APP_BASE_URL}/comments`,
+  //       {
+  //         headers:{Authorization: `Token ${token}`},
+  //       }
+  //     );
+  //     const commentsInfo = data.data;
+  //     getApiCommentsSuccess({ commentsInfo });
+  //     toastSuccessNotify(`comments basariliyla eklenmiştir.`);
+  //   } catch (error) {
+  //     dispatch(fetchFail());
+  //     toastErrorNotify(`comments eklenememiştir.`);
+  //     console.log(error);
+  //   }
+  // };
+
   const postNewBlog = async (path, info) => {
     dispatch(fetchStart());
     try {

@@ -8,7 +8,6 @@ const initialState = {
   loading: false,
   error: false,
 };
-
 const CardSlice = createSlice({
   name: "card",
   initialState,
@@ -22,7 +21,7 @@ const CardSlice = createSlice({
     },
     getApiCommentsSuccess: (state, {payload: {path, commentsInfo}}) => {
       state.loading = false
-      state.comments = commentsInfo
+      state[path] = commentsInfo
     },
     fetchError: (state) => {
       state.loading = false;
