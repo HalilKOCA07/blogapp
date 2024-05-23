@@ -17,10 +17,10 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 export default function BlogCard() {
-  const { blogs = [] } = useSelector((state) => state.card);
-  const { getInfo } = useApiRequest();
+  const { blogs, comments } = useSelector((state) => state.card);
+  const { getInfo, getComments } = useApiRequest();
   const navigate = useNavigate()
-console.log(blogs)
+console.log(comments)
 
 const handleDetail = () => {
 
@@ -29,6 +29,7 @@ const handleDetail = () => {
 
   useEffect(() => {
     getInfo();
+    getComments();
   }, []);
   return (
     <Box

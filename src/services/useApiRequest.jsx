@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchStart,
   getApiCardSuccess,
-  getApiDetailSuccess,
+  getApiCommentsSuccess,
 } from "../helper/CardSlice";
 import { fetchFail } from "../helper/AuthSlice";
 import axios from "axios";
@@ -31,18 +31,19 @@ const useApiRequest = () => {
     }
   };
 
-  const detailBlog = async () => {
+  const getComments = async (path = "comments") => {
     dispatch(fetchStart());
     try {
-      const { data } = await axiosToken.get(`/blogs/${id}`);
-      const blogDetail = data;
-      dispatch(getApiDetailSuccess({ blogDetail }));
+      const { data } = await axiosToken.get(`/${path}`);
+      const commentsInfo = data.data;
+      getApiCommentsSuccess({path, commentsInfo});
+      toastSuccessNotify(`${path} basariliyla eklenmiştir.`);
     } catch (error) {
-      console.log("Detail wrong", error);
       dispatch(fetchFail());
+      toastErrorNotify(`${path} eklenememiştir.`);
+      console.log(error);
     }
   };
-
   const postNewBlog = async (path, info) => {
     dispatch(fetchStart());
     try {
@@ -55,6 +56,7 @@ const useApiRequest = () => {
       console.log(error);
     }
   };
+
   const putBlogInfo = async (path, info) => {
     try {
       await axiosToken.put(`/${path}/${user._id}/`, info);
@@ -66,6 +68,6 @@ const useApiRequest = () => {
     }
   };
 
-  return { getInfo, postNewBlog, putBlogInfo, detailBlog };
+  return { getInfo, postNewBlog, putBlogInfo, getComments };
 };
 export default useApiRequest;

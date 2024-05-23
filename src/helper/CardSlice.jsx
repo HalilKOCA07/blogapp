@@ -4,7 +4,7 @@ const initialState = {
   blogs: [],
   newBlog: [],
   categories:[],
-  details:[],
+  comments:[],
   loading: false,
   error: false,
 };
@@ -17,12 +17,12 @@ const CardSlice = createSlice({
       state.loading = true;
     },
     getApiCardSuccess: (state, {payload: {path, blogInfo}}) => {
-      fetchStart.loading = false
+      state.loading = false
       state[path] = blogInfo
     },
-    getApiDetailSuccess: (state, {payload: {blogDetail}}) => {
-      fetchStart.loading = false
-      state.details = blogDetail
+    getApiCommentsSuccess: (state, {payload: {path, commentsInfo}}) => {
+      state.loading = false
+      state.comments = commentsInfo
     },
     fetchError: (state) => {
       state.loading = false;
@@ -31,6 +31,6 @@ const CardSlice = createSlice({
   },
 });
 
-export const { fetchError, fetchStart, getApiCardSuccess, getApiDetailSuccess } = CardSlice.actions;
+export const { fetchError, fetchStart, getApiCardSuccess, getApiCommentsSuccess } = CardSlice.actions;
 
 export default CardSlice.reducer;

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import useApiRequest from "../services/useApiRequest";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Box } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
@@ -20,16 +20,15 @@ import TextField from '@mui/material/TextField';
 const DetailCard = () => {
   const [expanded, setExpanded] = React.useState(false);
   const { id } = useParams();
-  const { detailBlog, getInfo } = useApiRequest();
-  const { details, blogs } = useSelector((state) => state.card);
-  console.log(blogs, id);
+  const { getInfo, getComments } = useApiRequest();
+  const { blogs, comments } = useSelector((state) => state.card);
+  console.log(comments, id);
   useEffect(() => {
-    detailBlog();
     getInfo("blogs");
+    getComments("comments");
   }, [id]);
 
   const detailBlogUser = blogs.filter((item) => item._id === id);
-  console.log(detailBlogUser);
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
@@ -40,7 +39,8 @@ const DetailCard = () => {
 
   return (
     <Box>
-      {detailBlogUser.map((item) => (
+      <Box>
+        {detailBlogUser.map((item) => (
         <Card
           key={item._id}
           sx={{
@@ -88,80 +88,36 @@ const DetailCard = () => {
             </IconButton>
           </CardActions>
         </Card>
-      ))}
-      <Box>
+        ))}
+      </Box>
       <Box
-      component="form"
-      sx={{
-        '& .MuiTextField-root': { m: 1, width: '25ch' },
-      }}
-      noValidate
-      autoComplete="off"
-    >
-      <div>
+        component="form"
+        noValidate
+        autoComplete="off"
+        >
+        <Stack sx={{m:"auto", width:600, my:3}}>
         <TextField
           required
           id="outlined-required"
-          label="Required"
-          defaultValue="Hello World"
-        />
-        <TextField
-          disabled
-          id="outlined-disabled"
-          label="Disabled"
-          defaultValue="Hello World"
-        />
-        <TextField
-          id="outlined-password-input"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-        />
-        <TextField
-          id="outlined-read-only-input"
-          label="Read Only"
-          defaultValue="Hello World"
-          InputProps={{
-            readOnly: true,
+          label="Comment"
+          defaultValue="Enter Your Comment"
+          variant="outlined"
+          sx={{ 
+            m: 1,
+            "& .MuiInputBase-input": {
+              height:100
+            }
           }}
         />
-        <TextField
-          id="outlined-number"
-          label="Number"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <TextField id="outlined-search" label="Search field" type="search" />
-        <TextField
-          id="outlined-helperText"
-          label="Helper text"
-          defaultValue="Default Value"
-          helperText="Some important text"
-        />
-      </div>
-      <div>
-        <TextField
-          required
-          id="filled-required"
-          label="Required"
-          defaultValue="Hello World"
-          variant="filled"
-        />
-      </div>
-      <div>
-        <TextField
-          required
-          id="standard-required"
-          label="Required"
-          defaultValue="Hello World"
-          variant="standard"
-        />
-      </div>
-    </Box>
-    </Box>
-    
+        </Stack>
+      </Box>
+      <Box>
+        <Typography>
+          <h6></h6>
+        </Typography>
+      </Box>
+      
+    </Box> 
   );
 };
 
