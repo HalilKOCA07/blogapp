@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function BlogCard() {
   const { blogs, comments } = useSelector((state) => state.card);
-  const { getInfo, getComments } = useApiRequest();
+  const { getInfo } = useApiRequest();
   const navigate = useNavigate()
 console.log(comments)
 
@@ -28,8 +28,7 @@ const handleDetail = () => {
 }
 
   useEffect(() => {
-    getInfo();
-    getComments();
+    getInfo("blogs");
   }, []);
   return (
     <Box
