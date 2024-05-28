@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import useApiRequest from "../services/useApiRequest";
 import { useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -18,31 +18,40 @@ import CommentIcon from "@mui/icons-material/Comment";
 import TextField from "@mui/material/TextField";
 import SendIcon from "@mui/icons-material/Send";
 
-const DetailCard = ({initialPostComment, setNewComment, newComment}) => {
+const DetailCard = ({ initialPostComment, setNewComment, newComment }) => {
   const { id } = useParams();
   const { getSingleBlog, postNewBlog } = useApiRequest();
   const { detail } = useSelector((state) => state.card);
-  const liked = {}
-console.log(detail)
+  const { user } = useSelector((state) => state.auth);
+  const [liked, setLiked] = useState(detail.likes.includes(user._id));
+  const [countLiked, setCountLiked] = useState(detail.likes.length)
+  const like = {};
+  console.log(detail.likes.includes(user._id), liked);
+  console.log(detail.likes[0],detail.likes.length, user._id);
   const handleChange = (e) => {
-    setNewComment({...newComment, [e.target.name]: e.target.value, "blogId":id})
-  }
+    setNewComment({
+      ...newComment,
+      [e.target.name]: e.target.value,
+      blogId: id,
+    });
+  };
 
-const handleSubmit = (e) => {
-    e.preventDefault()
-    postNewBlog("comments", newComment)
-    getSingleBlog(`blogs/${id}`)
-    setNewComment(initialPostComment)
-}
-
-const handleLike = () => {
-  postNewBlog(`blogs/${id}/postLike`, liked)
-  .then(() => getSingleBlog(`blogs/${id}`));;
-}
-
-  useEffect(() => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    postNewBlog("comments", newComment);
     getSingleBlog(`blogs/${id}`);
-  }, [id]);
+    setNewComment(initialPostComment);
+  };
+  
+    useEffect(() => {
+      getSingleBlog(`blogs/${id}`);
+    }, [id]);
+
+  const handleLike = () => {
+    postNewBlog(`blogs/${id}/postLike`, like);
+    liked ? setCountLiked(countLiked - 1 ) : setCountLiked(countLiked + 1)
+    setLiked(!liked)
+  };
 
   return (
     <Box>
@@ -58,9 +67,10 @@ const handleLike = () => {
         >
           <CardHeader
             avatar={
-              <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+              user.image ? (<Avatar><img src={user.image}  alt="" /></Avatar>) : (<Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
                 R
-              </Avatar>
+              </Avatar>)
+
             }
             title={detail.title}
             subheader={new Date(detail.createdAt).toLocaleString("tr-TR")}
@@ -82,7 +92,8 @@ const handleLike = () => {
           </CardContent>
           <CardActions disableSpacing sx={{ display: "flex", gap: 2 }}>
             <IconButton aria-label="add to favorites" onClick={handleLike}>
-              <FavoriteIcon /> <span>{detail.likes.length}</span>
+              <FavoriteIcon sx={liked && { color: "red" }} />{" "}
+              <span>{countLiked}</span>
             </IconButton>
             <IconButton aria-label="comment">
               <CommentIcon />
@@ -90,15 +101,19 @@ const handleLike = () => {
             </IconButton>
             <IconButton aria-label="visibility">
               <VisibilityIcon />
-              <span>{detail.countOfVisitors
-}</span>
+              <span>{detail.countOfVisitors}</span>
             </IconButton>
           </CardActions>
         </Card>
       </Box>
 
       {/* //!ENTER COMMENT */}
-      <Box component="form" noValidate autoComplete="off" onSubmit={handleSubmit}>
+      <Box
+        component="form"
+        noValidate
+        autoComplete="off"
+        onSubmit={handleSubmit}
+      >
         <Stack sx={{ m: "auto", width: 600, my: 3 }}>
           <TextField
             required
@@ -117,7 +132,12 @@ const handleLike = () => {
               },
             }}
           />
-          <Button type="submit" variant="contained" endIcon={<SendIcon />} sx={{width:300, m:"auto"}}>
+          <Button
+            type="submit"
+            variant="contained"
+            endIcon={<SendIcon />}
+            sx={{ width: 300, m: "auto" }}
+          >
             Send Your Comment
           </Button>
         </Stack>
