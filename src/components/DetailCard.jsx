@@ -22,7 +22,8 @@ const DetailCard = ({initialPostComment, setNewComment, newComment}) => {
   const { id } = useParams();
   const { getSingleBlog, postNewBlog } = useApiRequest();
   const { detail } = useSelector((state) => state.card);
-
+  const liked = {}
+console.log(detail)
   const handleChange = (e) => {
     setNewComment({...newComment, [e.target.name]: e.target.value, "blogId":id})
   }
@@ -34,8 +35,11 @@ const handleSubmit = (e) => {
     setNewComment(initialPostComment)
 }
 
-  console.log(detail);
-  console.log(newComment)
+const handleLike = () => {
+  postNewBlog(`blogs/${id}/postLike`, liked)
+  .then(() => getSingleBlog(`blogs/${id}`));;
+}
+
   useEffect(() => {
     getSingleBlog(`blogs/${id}`);
   }, [id]);
@@ -77,7 +81,7 @@ const handleSubmit = (e) => {
             </Typography>
           </CardContent>
           <CardActions disableSpacing sx={{ display: "flex", gap: 2 }}>
-            <IconButton aria-label="add to favorites">
+            <IconButton aria-label="add to favorites" onClick={handleLike}>
               <FavoriteIcon /> <span>{detail.likes.length}</span>
             </IconButton>
             <IconButton aria-label="comment">
@@ -86,7 +90,8 @@ const handleSubmit = (e) => {
             </IconButton>
             <IconButton aria-label="visibility">
               <VisibilityIcon />
-              <span>{detail.__v}</span>
+              <span>{detail.countOfVisitors
+}</span>
             </IconButton>
           </CardActions>
         </Card>

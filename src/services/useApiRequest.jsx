@@ -36,23 +36,27 @@ const useApiRequest = () => {
       console.log(singleBlog)
       dispatch(getApiSingleBlog({path, singleBlog}));
       toastSuccessNotify(`${path} basariliyla eklenmiştir.`);
+      return singleBlog;
     } catch (error) {
       dispatch(fetchFail());
       toastErrorNotify(`${path} eklenememiştir.`);
       console.log(error);
+      throw error; // Hata durumunda hatayı döndür
     }
   };
 
   const postNewBlog = async (path, info) => {
     dispatch(fetchStart());
     try {
-      await axiosToken.post(`/${path}/`, info);
+      const response = await axiosToken.post(`/${path}/`, info);
       getInfo(path);
       toastSuccessNotify(`${path} basariliyla eklenmiştir.`);
+      return response; // Sonucu döndür
     } catch (error) {
       dispatch(fetchFail());
       toastErrorNotify(`${path} eklenememiştir.`);
       console.log(error);
+      throw error; // Hata durumunda hatayı döndür
     }
   };
 
